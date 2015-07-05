@@ -3,6 +3,8 @@ MAINTAINER Stepan Mazurov <smazurov@socialengine.com>
 
 RUN export DEBIAN_FRONTEND=noninteractive
 
+ENV DOCKER_VERSION = 1.5.0
+
 # Prereqs
 RUN apt-get update
 
@@ -12,7 +14,7 @@ RUN apt-get update
 # 
 RUN apt-get install -y supervisor default-jre
 
-RUN apt-get install -y lxc-docker-1.5.0
+RUN apt-get install -y lxc-docker-${DOCKER_VERSION}
 
 # Install the magic wrapper.
 ADD ./wrapdocker /usr/local/bin/wrapdocker
@@ -22,8 +24,9 @@ VOLUME /var/lib/docker
 VOLUME /var/log/supervisor
 
 # Install Jenkins Swarm agent
-ENV AGENT_HOME /home/jenkins-agent
-RUN useradd -c "Jenkins agent" -d ${AGENT_HOME} -m jenkins-agent
+# variable must be named 'HOME' due to swarm client
+ENV HOME /home/jenkins-agent
+RUN useradd -c "Jenkins agent" -d ${HOME} -m jenkins-agent
 RUN usermod -aG docker jenkins-agent
 
 RUN curl --create-dirs -sSLo \
