@@ -32,7 +32,10 @@ RUN curl --create-dirs -sSLo \
     && chmod 755 /usr/share/jenkins
 
 # Install Tutum CLI
-RUN pip install -U tutum docker-compose
+RUN pip install tutum
+
+RUN curl -L https://github.com/docker/compose/releases/download/1.3.1/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose && \
+	chmod +x /usr/local/bin/docker-compose
 
 # Run Docker and Swarm processe with supervisord 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
