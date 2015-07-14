@@ -26,16 +26,15 @@ VOLUME /var/log/supervisor
 # variable must be named 'HOME' due to swarm client
 ENV HOME /root
 
-RUN curl --create-dirs -sSLo \
-    /usr/share/jenkins/swarm-client-jar-with-dependencies.jar \
-    http://maven.jenkins-ci.org/content/repositories/releases/org/jenkins-ci/plugins/swarm-client/1.24/swarm-client-1.24-jar-with-dependencies.jar \
-    && chmod 755 /usr/share/jenkins
+
+RUN mkdir -p /usr/share/jenkins && chmod 755 /usr/share/jenkins
+ADD http://maven.jenkins-ci.org/content/repositories/releases/org/jenkins-ci/plugins/swarm-client/1.24/swarm-client-1.24-jar-with-dependencies.jar /usr/share/jenkins/swarm-client-jar-with-dependencies.jar
 
 # Install Tutum CLI
 RUN pip install tutum
 
-RUN curl -L https://github.com/docker/compose/releases/download/1.3.1/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose && \
-	chmod +x /usr/local/bin/docker-compose
+ADD https://github.com/docker/compose/releases/download/1.2.0/docker-compose-linux-x86_64 /usr/local/bin/docker-compose
+RUN chmod +x /usr/local/bin/docker-compose
 
 # Run Docker and Swarm processe with supervisord 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
