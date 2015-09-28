@@ -1,5 +1,5 @@
 FROM sillelien/base-java
-#FROM ubuntu:trusty
+
 MAINTAINER Stepan Mazurov <smazurov@socialengine.com>
 
 RUN apk add --update \
@@ -33,7 +33,6 @@ RUN chmod +x /usr/local/bin/dind
 # Define additional metadata for our image.
 VOLUME /var/lib/docker
 VOLUME /var/log/supervisor
-
 
 ADD *.sh /usr/local/bin/
 ADD version_list /etc/docker/

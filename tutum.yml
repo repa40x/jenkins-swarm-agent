@@ -1,0 +1,22 @@
+jenkins:
+  image: 'jenkins:latest'
+  environment:
+    - EXCLUDE_PORTS=50000
+    - FORCE_SSL=yes
+  tags:
+    - ci
+  volumes:
+    - '/mnt/se-jenkins-home:/var/jenkins_home'
+jenkins-agent:
+  image: 'socialengine/dind-jenkins-agent:latest'
+  command: '-labels docker'
+  environment: 
+    - JENKINS_PASSWORD=**fill**
+    - JENKINS_USERNAME=**fill**
+  links:
+    - jenkins
+  privileged: true
+  tags:
+    - ci
+  volumes:
+    - '/var/run/docker.sock:/var/run/docker.sock'
