@@ -4,14 +4,14 @@ MAINTAINER Stepan Mazurov <smazurov@socialengine.com>
 
 RUN apk add --update \
     # Install bash/curl for the dind setup script:
-    curl bash \
+    curl bash git \
     # Install py-pip as requirement to install docker-compose:
     py-pip \
     # Install the openssh-client (used by CI agents like buildkite):
     openssh-client \
   # Upgrade pip, install tutum cli and supervisor
   && pip install --upgrade \
-    pip supervisor \
+    pip \
   && rm -rf \
     # Clean up any temporary files:
     /tmp/* \
