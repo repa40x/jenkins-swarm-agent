@@ -43,8 +43,5 @@ RUN mkdir -p /usr/share/jenkins && chmod 755 /usr/share/jenkins
 ADD http://maven.jenkins-ci.org/content/repositories/releases/org/jenkins-ci/plugins/swarm-client/2.0/swarm-client-2.0-jar-with-dependencies.jar \
     /usr/share/jenkins/swarm-client-jar-with-dependencies.jar
 
-# Run Docker and Swarm processes with supervisord 
-ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-
 ENTRYPOINT ["/usr/local/bin/setup.sh"]
 
