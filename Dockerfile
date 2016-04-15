@@ -3,8 +3,8 @@ FROM sillelien/base-java
 MAINTAINER Stepan Mazurov <smazurov@socialengine.com>
 
 RUN apk add --update \
-    # Install bash for the dind setup script:
-    bash \
+    # Install bash/curl for the dind setup script:
+    curl bash \
     # Install py-pip as requirement to install docker-compose:
     py-pip \
     # Install the openssh-client (used by CI agents like buildkite):

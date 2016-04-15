@@ -15,7 +15,7 @@ if [ -S /var/run/docker.sock ]; then
 	print_msg "=> Detected unix socket at /var/run/docker.sock"
 	print_msg "=> Testing if docker version matches"
 	if ! docker version > /dev/null 2>&1 ; then
-		export DOCKER_VERSION=$(cat /etc/docker/version_list | grep -P "^$(docker version 2>&1 > /dev/null | grep -iF "client and server don't have same version" | grep -oP 'server: *\d*\.\d*' | grep -oP '\d*\.\d*') .*$" | cut -d " " -f2)
+		export DOCKER_VERSION=$(cat /etc/docker/version_list | grep -e "^$(docker version 2>&1 > /dev/null | grep -iF "Error response from daemon" | grep -oe 'server API version: *\d*\.\d*' | grep -oe '\d*\.\d*') .*$" | cut -d " " -f2)
 		if [ "${DOCKER_VERSION}" != "" ]; then
 			print_msg "=> Downloading Docker ${DOCKER_VERSION}"
 			curl -o /usr/bin/docker https://get.docker.com/builds/Linux/x86_64/docker-${DOCKER_VERSION}
