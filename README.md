@@ -1,16 +1,17 @@
-Jenkins Swarm DIND (Docker in Docker) Agent
+Jenkins Swarm Agent
 =====
 
-This is a docker image meant as a jenkins-swarm enabled slave that has capability to run docker images.
+This is a docker image meant as a jenkins-swarm enabled agent that has capability to run docker images.
 
 Contains:
 
 - Docker (1.9.1+)
 - Java
 - Python
-- Supervisord 
+- AWS Cli
+- Git 
 
-Can be used as Jenkins slave that can launch containers with docker.
+Can be used as Jenkins swarm agent that can launch containers with docker.
 
 ### Running
 

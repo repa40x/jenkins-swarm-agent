@@ -11,7 +11,7 @@ RUN apk add --update \
     openssh-client \
   # Upgrade pip, install tutum cli and supervisor
   && pip install --upgrade \
-    pip \
+    pip awscli \
   && rm -rf \
     # Clean up any temporary files:
     /tmp/* \
