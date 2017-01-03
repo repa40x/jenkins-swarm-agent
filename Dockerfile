@@ -40,7 +40,7 @@ ADD version_list /etc/docker/
 ENV HOME /root
 
 RUN mkdir -p /usr/share/jenkins && chmod 755 /usr/share/jenkins
-ADD http://maven.jenkins-ci.org/content/repositories/releases/org/jenkins-ci/plugins/swarm-client/2.0/swarm-client-2.0-jar-with-dependencies.jar \
+ADD https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/2.0/swarm-client-2.0-jar-with-dependencies.jar \
     /usr/share/jenkins/swarm-client-jar-with-dependencies.jar
 
 ENTRYPOINT ["/usr/local/bin/setup.sh"]

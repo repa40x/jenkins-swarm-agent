@@ -5,8 +5,9 @@ This is a docker image meant as a jenkins-swarm enabled agent that has capabilit
 
 Contains:
 
-- Docker (1.9.1+)
-- Java
+- Docker 1.10.3
+- Docker Compose 1.6.2
+- Java 8
 - Python
 - AWS Cli
 - Git 
