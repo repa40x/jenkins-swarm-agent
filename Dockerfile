@@ -1,4 +1,4 @@
-FROM sillelien/base-java
+FROM openjdk:8-jdk-alpine
 
 MAINTAINER Stepan Mazurov <smazurov@socialengine.com>
 
@@ -22,11 +22,12 @@ RUN apk add --update \
     # Remove any compiled python files (compile on demand):
     `find / -regex '.*\.py[co]'`
 
-ENV DIND_COMMIT=b8bed8832b77a478360ae946a69dab5e922b194e DOCKER_VERSION=1.10.3 COMPOSE_VERSION=1.6.2
-ADD https://get.docker.com/builds/Linux/x86_64/docker-${DOCKER_VERSION} /usr/bin/docker
+ENV DIND_COMMIT=27afaf3774d7f46028ab72192d4c1b65f8d88b87 DOCKER_VERSION=1.12.5 COMPOSE_VERSION=1.9.0
+ADD https://get.docker.com/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz /tmp/docker/docker.tgz
+RUN tar -xzvf /tmp/docker/docker.tgz -C /tmp && mv /tmp/docker/* /usr/bin/  && rm -r /tmp/docker*
 ADD https://raw.githubusercontent.com/docker/docker/${DIND_COMMIT}/hack/dind /usr/local/bin/dind
 ADD https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-linux-x86_64 /usr/local/bin/docker-compose
-RUN chmod +x /usr/bin/docker /usr/local/bin/dind /usr/local/bin/docker-compose && rm -fr /var/lib/docker/*
+RUN chmod +x /usr/bin/docker* /usr/local/bin/dind /usr/local/bin/docker-compose && rm -fr /var/lib/docker/*
 
 # Define additional metadata for our image.
 VOLUME /var/lib/docker
@@ -40,7 +41,7 @@ ADD version_list /etc/docker/
 ENV HOME /root
 
 RUN mkdir -p /usr/share/jenkins && chmod 755 /usr/share/jenkins
-ADD https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/2.0/swarm-client-2.0-jar-with-dependencies.jar \
+ADD https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/2.2/swarm-client-2.2-jar-with-dependencies.jar \
     /usr/share/jenkins/swarm-client-jar-with-dependencies.jar
 
 ENTRYPOINT ["/usr/local/bin/setup.sh"]

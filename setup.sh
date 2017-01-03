@@ -18,7 +18,11 @@ if [ -S /var/run/docker.sock ]; then
         export DOCKER_VERSION=$(cat /etc/docker/version_list | grep -e "^$(docker version 2>&1 > /dev/null | grep -iF "Error response from daemon" | grep -oe 'server API version: *\d*\.\d*' | grep -oe '\d*\.\d*') .*$" | cut -d " " -f2)
         if [ "${DOCKER_VERSION}" != "" ]; then
             print_msg "=> Downloading Docker ${DOCKER_VERSION}"
-            curl -o /usr/bin/docker https://get.docker.com/builds/Linux/x86_64/docker-${DOCKER_VERSION}
+            curl -o /tmp/docker.tgz https://get.docker.com/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz
+            tar -xzvf /tmp/docker.tgz -C /tmp
+            mv /tmp/docker/* /usr/bin/
+            rm -r /tmp/docker*
+            chmod +x /usr/bin/docker*
         fi
     fi
     docker version > /dev/null 2>&1 || { print_msg "   Failed to connect to docker daemon at /var/run/docker.sock" && exit 1; }

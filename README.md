@@ -3,14 +3,17 @@ Jenkins Swarm Agent
 
 This is a docker image meant as a jenkins-swarm enabled agent that has capability to run docker images.
 
+It requires `docker.sock` connection, and attempts to install latest compatible docker executable locally.
+
 Contains:
 
-- Docker 1.10.3
-- Docker Compose 1.6.2
+- Jenkins Swarm Client 2.2
+- Docker 1.12.3
+- Docker Compose 1.9.0
 - Java 8
 - Python
 - AWS Cli
-- Git 
+- Git
 
 Can be used as Jenkins swarm agent that can launch containers with docker.
 
@@ -28,8 +31,7 @@ docker run --privileged --link=jenkins:jenkins -v /var/run/docker.sock:/var/run/
 When linking to Jenkins master container, there is no need to use `-master`
 
 ```
-docker run -d --name jenkins -p 8080:8080 csanchez/jenkins-swarm
-docker run -d --link jenkins:jenkins socialengine/dind-jenkins-agent -username jenkins -password jenkins -executors 1
+docker run -d --link jenkins:jenkins socialengine/jenkins-swarm-agent -username jenkins -password jenkins -executors 1
 ```
 
 ### Attribution
