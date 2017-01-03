@@ -2,13 +2,15 @@ FROM openjdk:8-jdk-alpine
 
 MAINTAINER Stepan Mazurov <smazurov@socialengine.com>
 
-RUN apk add --update \
+ENV GLIBC 2.23-r3
+
+RUN apk add --update --no-cache \
     # Install bash/curl for the dind setup script:
     curl bash git \
     # Install py-pip as requirement to install docker-compose:
     py-pip \
     # Install the openssh-client (used by CI agents like buildkite):
-    openssh-client \
+    openssl ca-certificates openssh-client \
   # Upgrade pip, install tutum cli and supervisor
   && pip install --upgrade \
     pip awscli \
@@ -17,10 +19,14 @@ RUN apk add --update \
     /tmp/* \
     # Clean up the pip cache:
     /root/.cache \
-    # Clean up the apk cache:
-    /var/cache/apk/* \
     # Remove any compiled python files (compile on demand):
     `find / -regex '.*\.py[co]'`
+
+RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/sgerrand.rsa.pub && \
+    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/$GLIBC/glibc-$GLIBC.apk && \
+    apk add --no-cache glibc-$GLIBC.apk && rm glibc-$GLIBC.apk && \
+    ln -s /lib/libz.so.1 /usr/glibc-compat/lib/ && \
+    ln -s /lib/libc.musl-x86_64.so.1 /usr/glibc-compat/lib
 
 ENV DIND_COMMIT=27afaf3774d7f46028ab72192d4c1b65f8d88b87 DOCKER_VERSION=1.12.5 COMPOSE_VERSION=1.9.0
 ADD https://get.docker.com/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz /tmp/docker/docker.tgz
