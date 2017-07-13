@@ -25,7 +25,7 @@ if [[ $# -lt 1 ]] || [[ "$1" == "-"* ]]; then
     fi
 
     SWARMARGS="$@ $PARAMS"
-    exec java -jar /usr/share/jenkins/swarm-client-jar-with-dependencies.jar -fsroot ${HOME} ${SWARMARGS}
+    exec java -jar /usr/share/jenkins/swarm-client.jar -fsroot ${HOME} ${SWARMARGS}
 fi
 
 # Assume arg is a process the user wants to run

@@ -2,7 +2,10 @@ FROM openjdk:8-jdk-alpine
 
 MAINTAINER Stepan Mazurov <smazurov@socialengine.com>
 
+USER root
+
 ENV GLIBC 2.23-r3
+ENV SWARM_VERSION 3.3
 
 RUN apk add --update --no-cache \
     # Install bash/curl for the dind setup script:
@@ -11,10 +14,10 @@ RUN apk add --update --no-cache \
     py-pip \
     # Install the openssh-client (used by CI agents like buildkite):
     openssl ca-certificates openssh-client \
-  # Upgrade pip, install tutum cli and supervisor
-  && pip install --upgrade \
+    # Upgrade pip, install tutum cli and supervisor
+    && pip install --upgrade \
     pip awscli \
-  && rm -rf \
+    && rm -rf \
     # Clean up any temporary files:
     /tmp/* \
     # Clean up the pip cache:
@@ -46,9 +49,9 @@ ADD version_list /etc/docker/
 # variable must be named 'HOME' due to swarm client
 ENV HOME /root
 
-RUN mkdir -p /usr/share/jenkins && chmod 755 /usr/share/jenkins
-ADD https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/2.2/swarm-client-2.2-jar-with-dependencies.jar \
-    /usr/share/jenkins/swarm-client-jar-with-dependencies.jar
+RUN mkdir -p /usr/share/jenkins && chmod 755 /usr/share/jenkins && chmod 755 /usr/local/bin/*.sh
+ADD https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/${SWARM_VERSION}/swarm-client-${SWARM_VERSION}.jar \
+    /usr/share/jenkins/swarm-client.jar
 
 ENTRYPOINT ["/usr/local/bin/setup.sh"]
 
