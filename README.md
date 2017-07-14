@@ -7,7 +7,7 @@ It requires `docker.sock` connection, and attempts to install latest compatible 
 
 Contains:
 
-- Jenkins Swarm Client 2.2
+- Jenkins Swarm Client 3.3
 - Docker 1.12.3
 - Docker Compose 1.9.0
 - Java 8
@@ -17,6 +17,11 @@ Contains:
 
 Can be used as Jenkins swarm agent that can launch containers with docker.
 
+### Building
+```
+docker build -t jenkins-swarm-agent:3.3 .
+```
+
 ### Running
 
 This image requires you to give access to host docker via `-v /var/run/docker.sock:/var/run/docker.sock:rw`
@@ -25,13 +30,13 @@ To run a Docker container passing
 [any parameters](https://wiki.jenkins-ci.org/display/JENKINS/Swarm+Plugin#SwarmPlugin-AvailableOptions) to the slave:
 
 ```
-docker run --privileged --link=jenkins:jenkins -v /var/run/docker.sock:/var/run/docker.sock:rw -d socialengine/dind-jenkins-agent -master http://jenkins:8080 -username jenkins -password jenkins -executors 1
+docker run --privileged --link=jenkins:jenkins -v /var/run/docker.sock:/var/run/docker.sock:rw -d jenkins-swarm-agent:3.3 -master http://jenkins:8080 -username jenkins -password jenkins -executors 1
 ```
 
 When linking to Jenkins master container, there is no need to use `-master`
 
 ```
-docker run -d --link jenkins:jenkins socialengine/jenkins-swarm-agent -username jenkins -password jenkins -executors 1
+docker run -d --link jenkins:jenkins jenkins-swarm-agent:3.3 -username jenkins -password jenkins -executors 1
 ```
 
 ### Attribution
