@@ -9,7 +9,7 @@ ENV SWARM_VERSION 3.3
 
 RUN apk add --update --no-cache \
     # Install bash/curl for the dind setup script:
-    curl bash git jq postgresql-client \
+    curl bash git jq postgresql postgresql-client \
     # Install py-pip as requirement to install docker-compose:
     py-pip \
     # Install the openssh-client (used by CI agents like buildkite):
