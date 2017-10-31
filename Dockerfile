@@ -5,7 +5,7 @@ MAINTAINER Stepan Mazurov <smazurov@socialengine.com>
 USER root
 
 ENV GLIBC 2.23-r3
-ENV SWARM_VERSION 3.3
+ENV SWARM_VERSION 3.6
 
 RUN apk add --update --no-cache \
     # Install bash/curl for the dind setup script:
@@ -16,7 +16,7 @@ RUN apk add --update --no-cache \
     openssl ca-certificates openssh-client \
     # Upgrade pip, install tutum cli and supervisor
     && pip install --upgrade \
-    pip awscli \
+    pip awscli boto3 \
     && rm -rf \
     # Clean up any temporary files:
     /tmp/* \
