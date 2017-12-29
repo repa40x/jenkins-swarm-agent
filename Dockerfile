@@ -5,7 +5,7 @@ MAINTAINER Stepan Mazurov <smazurov@socialengine.com>
 USER root
 
 ENV GLIBC 2.23-r3
-ENV SWARM_VERSION 3.6
+ENV SWARM_VERSION 3.7
 
 RUN apk add --update --no-cache \
     # Install bash/curl for the dind setup script:
