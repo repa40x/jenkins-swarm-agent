@@ -1,16 +1,37 @@
 #!/bin/bash
+set -e
 
 print_msg() {
-        echo -e "\e[1m${1}\e[0m"
+    echo -e "\e[1m${1}\e[0m"
 }
+
+#
+# Start external docker daemon via mounted socket
+#
+
+if ! [ -S /var/run/docker.sock ]; then
+    print_msg "Please mount /var/run/docker.sock to connect to docker"
+    exit 1;
+fi
+
+print_msg "=> Detected unix socket at /var/run/docker.sock"
 
 # If there are no arguments or if args start with '-', run supervisor
 # and export args making them available to Swarm client.
-print_msg "=> Starting Boot"
+if [ -z "$JENKINS_URL" ]; then
+    print_msg "=> Please set JENKINS_URL variable"
+    exit 1;
+fi
+
+print_msg "=> Downloading swarm client"
+mkdir -p /usr/share/jenkins
+curl -s $JENKINS_URL/swarm/swarm-client.jar -o /usr/share/jenkins/swarm-client.jar
+
+print_msg "=> Starting swarm client"
 if [[ $# -lt 1 ]] || [[ "$1" == "-"* ]]; then
-    # if -master is not provided and using --link jenkins:jenkins
-    if [[ "$@" != *"-master "* ]] && [ ! -z "$JENKINS_PORT_8080_TCP_ADDR" ]; then
-        ADDR="http://$JENKINS_PORT_8080_TCP_ADDR:$JENKINS_PORT_8080_TCP_PORT"
+    # if -master is not provided
+    if [[ "$@" != *"-master "* ]]; then
+        ADDR="$JENKINS_URL"
         print_msg "=> Setting jenkins master to ${ADDR}"
         PARAMS="-master ${ADDR}"
     fi
