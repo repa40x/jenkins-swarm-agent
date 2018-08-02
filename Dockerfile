@@ -24,6 +24,8 @@ RUN apt-get update && \
         google-chrome-stable \
         jq \
         git \
+        zip \
+        openssh-client \
         postgresql-client \
         python3-pip \
         python3-setuptools &&\
